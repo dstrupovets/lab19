@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div id="snowman"></div>
+        <div class="header_text">
+          <div class="header_text_inner">
+            <h1>Anastasia</h1>
+            <img class="header_img" src="https://www.clipartmax.com/png/full/2-22593_clipart-of-cat-paw-prints-pawprint-with-claws-free-cat-paw-print.png" alt="">
+        
+          </div>
+            <p>ага. вроде все понятно!</p>
+          
+            
+        </div>
+    </header>
+    <div class="slider">
+        <div class="slider__wrapper">
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(247, 241, 231);">
+              <img src="https://sun9-4.userapi.com/6x3W_ehYMy0hDTIU7JqSf0vrwwQDlgsddyEJ7g/GIf0vsIcG5E.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(222, 223, 222);">
+              <img src="https://sun9-29.userapi.com/fcasY43fNkt5G2IngwzCar18gsQqt3wNPH-kHg/ndcSbXZmLFE.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(255, 255, 255);">
+              <img src="https://sun9-16.userapi.com/JB7C_uWMVGlrefFxM9mSkDnBCsOzRP13q-K8jQ/7Sl0jhQcmhk.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(150, 149, 148);">
+              <img src="https://sun9-50.userapi.com/UUOJTDaVVgFa1jxy52St3YC1bp9HpW0u4hoTQg/aQAykjHeEsg.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(248, 248, 248);">
+              <img src="https://sun9-40.userapi.com/usjsMRWnrkInrfbayH63FzzHWoEi7WUWTSkgvw/f_S4vJmBees.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(94, 93, 94);">
+              <img src="https://sun9-39.userapi.com/F4XKMfR9_2e-__v_q4ZTUAjuXPzn1f_0s_CWcA/KDuDTpiuEc4.jpg" alt="">
+            </div>
+          </div>
+          <div class="slider__item">
+            <div style="height: 400px; background: rgb(255, 255, 255);">
+              
+                <img src="https://sun9-5.userapi.com/NNT0i1gN7-b12Muf1OKBfC5NNGE0NmDuuQVCpA/qe3-Cqk6JLM.jpg" alt="">
+            
+            </div>
+          </div>
+        </div>
+        <a class="slider__control slider__control_left" href="#" role="button"></a>
+        <a class="slider__control slider__control_right slider__control_show" href="#" role="button"></a>
+      </div>
+
+     
+      
+   
+
+    <script src="main.js"></script>
+    <script>
+        'use strict';
+        var multiItemSlider = (function () {
+          return function (selector, config) {
+            var
+              _mainElement = document.querySelector(selector), // основный элемент блока
+              _sliderWrapper = _mainElement.querySelector('.slider__wrapper'), // обертка для .slider-item
+              _sliderItems = _mainElement.querySelectorAll('.slider__item'), // элементы (.slider-item)
+              _sliderControls = _mainElement.querySelectorAll('.slider__control'), // элементы управления
+              _sliderControlLeft = _mainElement.querySelector('.slider__control_left'), // кнопка "LEFT"
+              _sliderControlRight = _mainElement.querySelector('.slider__control_right'), // кнопка "RIGHT"
+              _wrapperWidth = parseFloat(getComputedStyle(_sliderWrapper).width), // ширина обёртки
+              _itemWidth = parseFloat(getComputedStyle(_sliderItems[0]).width), // ширина одного элемента    
+              _positionLeftItem = 0, // позиция левого активного элемента
+              _transform = 0, // значение транфсофрмации .slider_wrapper
+              _step = _itemWidth / _wrapperWidth * 100, // величина шага (для трансформации)
+              _items = []; // массив элементов
+            // наполнение массива _items
+            _sliderItems.forEach(function (item, index) {
+              _items.push({ item: item, position: index, transform: 0 });
+            });
+    
+            var position = {
+              getMin: 0,
+              getMax: _items.length - 1,
+            }
+    
+            var _transformItem = function (direction) {
+              if (direction === 'right') {
+                if ((_positionLeftItem + _wrapperWidth / _itemWidth - 1) >= position.getMax) {
+                  return;
+                }
+                if (!_sliderControlLeft.classList.contains('slider__control_show')) {
+                  _sliderControlLeft.classList.add('slider__control_show');
+                }
+                if (_sliderControlRight.classList.contains('slider__control_show') && (_positionLeftItem + _wrapperWidth / _itemWidth) >= position.getMax) {
+                  _sliderControlRight.classList.remove('slider__control_show');
+                }
+                _positionLeftItem++;
+                _transform -= _step;
+              }
+              if (direction === 'left') {
+                if (_positionLeftItem <= position.getMin) {
+                  return;
+                }
+                if (!_sliderControlRight.classList.contains('slider__control_show')) {
+                  _sliderControlRight.classList.add('slider__control_show');
+                }
+                if (_sliderControlLeft.classList.contains('slider__control_show') && _positionLeftItem - 1 <= position.getMin) {
+                  _sliderControlLeft.classList.remove('slider__control_show');
+                }
+                _positionLeftItem--;
+                _transform += _step;
+              }
+              _sliderWrapper.style.transform = 'translateX(' + _transform + '%)';
+            }
+    
+            // обработчик события click для кнопок "назад" и "вперед"
+            var _controlClick = function (e) {
+              if (e.target.classList.contains('slider__control')) {
+                e.preventDefault();
+                var direction = e.target.classList.contains('slider__control_right') ? 'right' : 'left';
+                _transformItem(direction);
+              }
+            };
+    
+            var _setUpListeners = function () {
+              // добавление к кнопкам "назад" и "вперед" обрботчика _controlClick для событя click
+              _sliderControls.forEach(function (item) {
+                item.addEventListener('click', _controlClick);
+              });
+            }
+    
+            // инициализация
+            _setUpListeners();
+    
+            return {
+              right: function () { // метод right
+                _transformItem('right');
+              },
+              left: function () { // метод left
+                _transformItem('left');
+              }
+            }
+    
+          }
+        }());
+    
+        var slider = multiItemSlider('.slider')
+    
+      </script>
+</body>
+</html>
